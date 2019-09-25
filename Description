@@ -1,0 +1,59 @@
+系统centos7
+1.查看已开放的端口(默认不开放任何端口)
+firewall-cmd --list-ports
+2.开启80端口
+firewall-cmd --zone=public(作用域) --add-port=80/tcp(端口和访问类型) --permanent(永久生效)
+3.重启防火墙
+firewall-cmd --reload
+4.停止防火墙
+systemctl stop firewalld.service
+5.禁止防火墙开机启动
+systemctl disable firewalld.service
+6.删除
+firewall-cmd --zone= public --remove-port=80/tcp --permanent
+
+--开通防火墙命令
+firewall-cmd --zone=public --add-port=8080/tcp --permanent
+firewall-cmd --zone=public --add-port=8081/tcp --permanent
+firewall-cmd --zone=public --add-port=9500/tcp --permanent
+firewall-cmd --zone=public --add-port=9600/tcp --permanent
+firewall-cmd --zone=public --add-port=10011/tcp --permanent
+firewall-cmd --zone=public --add-port=10012/tcp --permanent
+
+
+
+
+zuul_server使用8080端口，
+eureka_server期中一个节点使用8081端口
+
+zuul_server每台机器各部署一个。
+eureka_server在 132.32.32.124上部署8081端口（配置文件pro1），  在132.32.32.125部署9600 和9500端口(配置文件pro2 pro3)。
+
+nohup java -jar eureka_server-1.0-SNAPSHOT.jar --spring.profiles.active=pro1 &
+nohup java -jar eureka_server-1.0-SNAPSHOT.jar --spring.profiles.active=pro2 &
+nohup java -jar eureka_server-1.0-SNAPSHOT.jar --spring.profiles.active=pro3 &
+
+nohup java -jar zuul_server-1.0-SNAPSHOT.jar --spring.profiles.active=pro &
+
+
+nohup java -jar core_web_api_write.jar --spring.profiles.active=pro &
+
+nohup java -jar core_web_api_read.jar --spring.profiles.active=pro &
+
+
+eureka管理中心
+http://132.32.32132.32.32.234:8081/
+admin 123456
+
+移除节点
+curl -u admin:123456 -X DELETE http://127.0.0.1:8081/eureka/apps/ZUUL_SERVER/132.32.32.124:10011:cf6d9fd513f57727e57c8bc213767fc3
+curl -u admin:123456 -X DELETE http://127.0.0.1:9600/eureka/apps/ZUUL_SERVER/132.32.32.125:8080:7d0efb9dd6f848a66da1a5d552d8b356
+curl -u admin:123456 -X DELETE http://127.0.0.1:9600/eureka/apps/ZUUL_SERVER/132.32.32.130:10013:1f65073cbcb0fe2eb0847761f426d0c3
+tips：发布到生产环境要打开client Application启动器 EnableEurekaClient注解，测试环境关闭。
+
+
+超时配置参考文档：
+https://segmentfault.com/a/1190000007290888
+http://www.coolxuewang.com/view/9
+
+测试：在在测试服务中使用Thread.sleep(3000)  通过zuul访问，默认配置会超时， 修改后不再提示超时了。
