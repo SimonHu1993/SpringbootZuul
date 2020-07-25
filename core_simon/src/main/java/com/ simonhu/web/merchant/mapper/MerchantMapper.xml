@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.simonhu.web.merchant.mapper.MerchantMapper">
+    <!-- 查询APP商户信息 -->
+    <select id="findAppCardMerchantById" parameterType="java.lang.String" resultType="java.util.HashMap">
+        select merchant_id as "merchantid",merchant_name as "merchantname",status as "status",merchant_pubkey as "merchantpubkey",private_key as "memberprivatekey"
+        from xshtest.appcard_merchant_info
+        where merchant_id = #{MerchantID}
+    </select>
+
+    <select id="sysConfig" parameterType="java.lang.String" resultType="java.util.HashMap">
+        select config_type as "configType",value1 as "value1",value2 as "value2",value3 as "value3",value4 as "value4",value5 as "value5"
+         from  xshtest.appcard_sys_config where config_type = #{configType}
+    </select>
+    <!--插入请求流水订单-->
+    <insert id="insertRequestId" parameterType="java.util.Map">
+        <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Long">
+            select xshtest.appcard_request_log_seq.Nextval  from DUAL
+        </selectKey>
+      INSERT into xshtest.appcard_request_log(id,QUEYID)values(#{id},#{requestId})
+    </insert>
+</mapper>

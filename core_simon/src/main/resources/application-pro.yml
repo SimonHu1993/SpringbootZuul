@@ -12,9 +12,9 @@ spring:
     name: cardmember
   datasource:
       driver-class-name: oracle.jdbc.driver.OracleDriver
-      url: jdbc:oracle:thin:@32.32.32.32:1521/32
-      username: 323232
-      password: '3232#pP'
+      url: jdbc:oracle:thin:@33.33.3.3:1521/32
+      username: 3232
+      password: '3232232#pP'
       type: com.zaxxer.hikari.HikariDataSource
       hikari:
         maxLifetime: 1765000 #一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired），缺省:30分钟，建议设置比数据库超时时长少30秒以上
@@ -46,8 +46,7 @@ eureka:
     healthcheck:
       enabled: true
     serviceUrl:
-      defaultZone: http://admin:123456@132.32.32.124:8081/eureka/,http://admin:123456@32.32.32.125:9600/eureka/
-      # 多个eureka节点
+      defaultZone: http://admin:123456@32.32.32.124:8081/eureka/,http://admin:123456@2.32.32.125:9600/eureka/
   instance:
     #启用Ip注册
     preferIpAddress: true

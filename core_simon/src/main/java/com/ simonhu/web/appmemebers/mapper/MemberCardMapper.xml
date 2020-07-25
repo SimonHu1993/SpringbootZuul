@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.simonhu.web.appmemebers.mapper.MemberCardMapper">
+
+    <!-- 查询卡信息 -->
+    <parameterMap type="java.util.Map" id="oracleMap">
+        <parameter property="p_in_str" mode="IN" jdbcType="VARCHAR"/>
+        <parameter property="p_out_str" mode="OUT" jdbcType="VARCHAR"/>
+    </parameterMap>
+    <select id="checkCardInfo" statementType="CALLABLE" parameterMap="oracleMap">
+        {call xshtest.APP_MEMBER_CARD_INFO(?,?)}
+    </select>
+
+    <!-- 卡核销 -->
+    <parameterMap type="java.util.Map" id="oracleMap2">
+        <parameter property="p_in_str" mode="IN" jdbcType="VARCHAR"/>
+        <parameter property="p_out_str" mode="OUT" jdbcType="VARCHAR"/>
+    </parameterMap>
+    <select id="verificationCard" statementType="CALLABLE" parameterMap="oracleMap2">
+        {call xshtest.APP_VERIFICATION_CARD(?,?)}
+    </select>
+
+    <!-- 卡核销查询 -->
+    <parameterMap type="java.util.Map" id="oracleMap3">
+        <parameter property="p_in_str" mode="IN" jdbcType="VARCHAR"/>
+        <parameter property="p_out_str" mode="OUT" jdbcType="VARCHAR"/>
+    </parameterMap>
+    <select id="verificationCardCheck" statementType="CALLABLE" parameterMap="oracleMap2">
+        {call xshtest.APP_VERIFICATION_CARD_CHECK(?,?)}
+    </select>
+</mapper>
